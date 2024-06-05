@@ -2,9 +2,10 @@
 A basic Image CDN made with PHP.
 
 # Contributing:
-Make a pull request and we will check over it! Darren is perfect so i don't see what you would want to change
+Make a pull request and we will check over it! 
 
-# Links
-- [Free Hosting](https://panel.sillydev.co.uk)
-- [Discord](https://discord.gg/WeQ3TpdfZM)
-- gamer@sillydev.co.uk
+## Resources
+
+- [Discord server](https://discord.gg/sillydev)
+- [Free hosting](https://sillydev.co.uk)
+- Contact me: gamer@sillydev.co.uk
