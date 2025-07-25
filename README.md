@@ -25,7 +25,7 @@ A simple and minimalistic image CDN built with PHP.
 2. Edit `index.php`:
 
    * Change the `authKey` to your own secure value (used to verify uploads)
-   * Set the correct `file_url` to your domain (e.g., `https://your.domain/`)
+   * Set the correct `file_url_base` to your domain (e.g., `https://your.domain/uploads/`)
 
 3. (Optional) Test your setup using `curl`:
 
