@@ -3,7 +3,7 @@
 $authKey = 'changethis';
 
 // Base URL for uploaded files — change to your domain + path
-$file_url_base = 'https://your.domain/';
+$file_url_base = 'https://your.domain/uploads/';
 
 // Allowed file extensions
 $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
