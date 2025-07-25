@@ -1,47 +1,74 @@
 <?php
 // Set your authentication key
-$authKey = 'Put auth key here';
-// Function to generate a random name for the uploaded file
-function generateRandomName($extension) {
+$authKey = 'changethis';
+
+// Base URL for uploaded files — change to your domain + path
+$file_url_base = 'https://your.domain/';
+
+// Allowed file extensions
+$allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
+
+// Function to generate a random filename with extension
+function generateRandomName(string $extension, int $length = 10): string {
     $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     $randomString = '';
-    $length = 10;
+    $maxIndex = strlen($characters) - 1;
     for ($i = 0; $i < $length; $i++) {
-        $randomString .= $characters[rand(0, strlen($characters) - 1)];
+        $randomString .= $characters[random_int(0, $maxIndex)];
     }
     return $randomString . '.' . $extension;
 }
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Check if the authentication key is provided and correct
-    if (isset($_POST['auth_key']) && $_POST['auth_key'] === $authKey) {
-        if (isset($_FILES['file'])) {
-            $file = $_FILES['file'];
-            $file_name = $file['name'];
-            $file_tmp = $file['tmp_name'];
-            $file_type = $file['type'];
-            $file_size = $file['size'];
-            $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-            $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
-            // Check if the file extension is allowed
-            if (in_array($file_ext, $allowed_extensions)) {
-                // Generate a random name for the file
-                $new_file_name = generateRandomName($file_ext);
-                $path = 'uploads/' . $new_file_name;
-                // Move the uploaded file to the destination folder
-                if (move_uploaded_file($file_tmp, $path)) {
-                    // Generate the URL to view the uploaded file
-                    $file_url = 'https://cdn.sillychat.tech/uploads/' . $new_file_name;
-                    echo $file_url;
-                } else {
-                    echo 'Failed to upload the file.';
-                }
-            } else {
-                echo 'File type not allowed.';
-            }
-        } else {
-            echo 'No file uploaded.';
-        }
-    } else {
+    // Validate auth key
+    if (!isset($_POST['auth_key']) || $_POST['auth_key'] !== $authKey) {
+        http_response_code(403);
         echo 'Invalid authentication key.';
+        exit;
     }
+
+    // Validate uploaded file
+    if (!isset($_FILES['file']) || $_FILES['file']['error'] !== UPLOAD_ERR_OK) {
+        http_response_code(400);
+        echo 'No file uploaded or upload error.';
+        exit;
+    }
+
+    $file = $_FILES['file'];
+    $file_ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+
+    if (!in_array($file_ext, $allowed_extensions, true)) {
+        http_response_code(415);
+        echo 'File type not allowed.';
+        exit;
+    }
+
+    // Ensure uploads directory exists
+    $upload_dir = __DIR__ . '/uploads/';
+    if (!is_dir($upload_dir) && !mkdir($upload_dir, 0755, true)) {
+        http_response_code(500);
+        echo 'Failed to create upload directory.';
+        exit;
+    }
+
+    // Generate unique filename and move file
+    do {
+        $new_file_name = generateRandomName($file_ext);
+        $destination = $upload_dir . $new_file_name;
+    } while (file_exists($destination));
+
+    if (!move_uploaded_file($file['tmp_name'], $destination)) {
+        http_response_code(500);
+        echo 'Failed to upload the file.';
+        exit;
+    }
+
+    // Output the full URL to the uploaded file
+    echo $file_url_base . $new_file_name;
+    exit;
 }
+
+// If not POST request
+http_response_code(405);
+echo 'Method Not Allowed.';
+exit;
