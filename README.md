@@ -1,4 +1,4 @@
-# 📷 Basic CDN
+# 📷 DuckCDN
 
 A simple and minimalistic image CDN built with PHP.
 
@@ -10,6 +10,7 @@ A simple and minimalistic image CDN built with PHP.
 * Self-hosted
 * Simple upload API with `authKey`
 * Automatic screenshot upload support (Linux & Windows)
+* Built-in control panel for file management
 
 ---
 
@@ -20,14 +21,13 @@ A simple and minimalistic image CDN built with PHP.
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/TheGamer3514/Basic-CDN.git
-   cd Basic-CDN
+   git clone https://github.com/freeutka/DuckCDN.git
+   cd DuckCDN
    ```
 
-2. Edit `index.php`:
+2. Edit `config.php`:
 
-   * Change the `authKey` to your own secure value
-   * Set the correct `file_url_base` to your domain (e.g., `https://your.domain/uploads/`)
+   * Replace all parameters with the ones you need
 
 3. (Optional) Test your setup using `curl`:
 
@@ -120,7 +120,7 @@ chmod +x ~/upload_screenshot.sh
 
 **Request:**
 
-* **Name**: `BasicCDN`
+* **Name**: `DuckCDN`
 * **Request type**: `POST`
 * **Request URL**:
 
@@ -152,7 +152,7 @@ chmod +x ~/upload_screenshot.sh
    * `Upload image to host`
    * `Copy URL to clipboard`
 
-3. In `Destinations → Image uploader`, select `Custom uploaders → BasicCDN`
+3. In `Destinations → Image uploader`, select `Custom uploaders → DuckCDN`
 
 ---
 
@@ -168,13 +168,5 @@ chmod +x ~/upload_screenshot.sh
 
 Want to improve or fix something?
 Make a pull request and we'll review it.
-
----
-
-## 📚 Resources
-
-* 💬 [Discord Server](https://discord.gg/sillydev)
-* 🌐 [Free Hosting](https://sillydev.co.uk)
-* 📧 Contact: `gamer@sillydev.co.uk`
 
 ---
