@@ -1,12 +1,5 @@
 <?php
-// Set your authentication key
-$authKey = 'changethis';
-
-// Base URL for uploaded files — change to your domain + path
-$file_url_base = 'https://your.domain/uploads/';
-
-// Allowed file extensions
-$allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
+require_once __DIR__ . '/config.php';
 
 // Function to generate a random filename with extension
 function generateRandomName(string $extension, int $length = 10): string {
@@ -19,9 +12,14 @@ function generateRandomName(string $extension, int $length = 10): string {
     return $randomString . '.' . $extension;
 }
 
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('Location: panel/login.php');
+    exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validate auth key
-    if (!isset($_POST['auth_key']) || $_POST['auth_key'] !== $authKey) {
+    if (!isset($_POST['auth_key']) || $_POST['auth_key'] !== $auth_key) {
         http_response_code(403);
         echo 'Invalid authentication key.';
         exit;
@@ -64,11 +62,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Output the full URL to the uploaded file
-    echo $file_url_base . $new_file_name;
+    echo $cdn_base_url . $new_file_name;
     exit;
 }
 
-// If not POST request
 http_response_code(405);
 echo 'Method Not Allowed.';
 exit;
