@@ -6,10 +6,10 @@ A simple and minimalistic image CDN built with PHP.
 
 ## 🚀 Features
 
-- Lightweight and fast
-- Self-hosted
-- Simple upload API with `authKey`
-- Automatic screenshot upload support (Linux)
+* Lightweight and fast
+* Self-hosted
+* Simple upload API with `authKey`
+* Automatic screenshot upload support (Linux & Windows)
 
 ---
 
@@ -18,13 +18,15 @@ A simple and minimalistic image CDN built with PHP.
 ### 🔧 Server Setup
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/TheGamer3514/Basic-CDN.git
    cd Basic-CDN
+   ```
 
 2. Edit `index.php`:
 
-   * Change the `authKey` to your own secure value (used to verify uploads)
+   * Change the `authKey` to your own secure value
    * Set the correct `file_url_base` to your domain (e.g., `https://your.domain/uploads/`)
 
 3. (Optional) Test your setup using `curl`:
@@ -41,19 +43,19 @@ A simple and minimalistic image CDN built with PHP.
    https://your.domain/uploads/random.png
    ```
 
-5. (Optional) Proceed to configure automatic screenshot uploading on Linux.
+5. Proceed to configure automatic screenshot uploading below.
 
 ---
 
-### 🖥️ Client Setup (Linux Screenshot Uploader)
+## 🖥️ Client Setup (Linux Screenshot Uploader)
 
-#### 1. Install dependencies:
+### 1. Install dependencies:
 
 ```bash
 sudo dnf install flameshot xclip curl
 ```
 
-#### 2. Create script `~/upload_screenshot.sh`:
+### 2. Create script `~/upload_screenshot.sh`:
 
 ```bash
 nano ~/upload_screenshot.sh
@@ -83,34 +85,96 @@ fi
 rm -f "$tmpfile"
 ```
 
-#### 3. Make it executable:
+### 3. Make it executable:
 
 ```bash
 chmod +x ~/upload_screenshot.sh
 ```
 
-#### 4. Bind to a keyboard shortcut (GNOME example):
+### 4. Bind to a keyboard shortcut (GNOME example):
 
 * Open **Settings → Keyboard → Custom Shortcuts**
 * Add a new shortcut:
 
   * **Name**: CDN Screenshot
   * **Command**: `/home/your_username/upload_screenshot.sh`
-  * **Shortcut**: e.g., Shift + Print
+  * **Shortcut**: e.g., `Shift + Print`
+
+---
+
+## 🪟 Client Setup (Windows Screenshot Uploader)
+
+### 1. Requirements
+
+* [ShareX](https://getsharex.com/) — free screenshot tool with upload scripting
+* Your CDN API endpoint
+* Your `auth_key`
+
+---
+
+### 2. Configure ShareX to upload screenshots
+
+1. Open ShareX
+2. Go to `Destinations → Custom uploader settings`
+3. Click `New` and set the following:
+
+**Request:**
+
+* **Name**: `BasicCDN`
+* **Request type**: `POST`
+* **Request URL**:
+
+  ```
+  http://your.domain/   ← with trailing slash
+  ```
+* **File form name**: `file`
+* **Arguments** (Form data `multipart/form-data`):
+
+  ```json
+  {
+    "auth_key": "changethis"
+  }
+  ```
+
+**Response:**
+
+* **URL**: `$response$`
+* **Regex for response URL**: `https?://.*` *(optional)*
+
+---
+
+### 3. Set up automatic behavior
+
+1. In ShareX, go to `Task Settings → After capture tasks`
+
+2. Enable:
+
+   * `Upload image to host`
+   * `Copy URL to clipboard`
+
+3. In `Destinations → Image uploader`, select `Custom uploaders → BasicCDN`
+
+---
+
+### 4. Test
+
+1. Press `PrintScreen` or select area
+2. Screenshot is uploaded to your server
+3. CDN link is copied to clipboard
 
 ---
 
 ## 🤝 Contributing
 
 Want to improve or fix something?
-Make a pull request and we'll review it!
+Make a pull request and we'll review it.
 
 ---
 
 ## 📚 Resources
 
-* [💬 Discord Server](https://discord.gg/sillydev)
-* [🌐 Free Hosting](https://sillydev.co.uk)
+* 💬 [Discord Server](https://discord.gg/sillydev)
+* 🌐 [Free Hosting](https://sillydev.co.uk)
 * 📧 Contact: `gamer@sillydev.co.uk`
 
 ---
