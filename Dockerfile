@@ -10,4 +10,5 @@ RUN chown -R www-data:www-data /var/www/html
 
 RUN a2enmod rewrite
 
+RUN echo "PidFile /tmp/apache2.pid" >> /etc/apache2/apache2.conf
 RUN mkdir -p /var/run/apache2 && chown www-data:www-data /var/run/apache2
