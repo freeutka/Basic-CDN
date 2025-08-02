@@ -9,3 +9,5 @@ COPY . /var/www/html/
 RUN chown -R www-data:www-data /var/www/html
 
 RUN a2enmod rewrite
+
+RUN mkdir -p /var/run/apache2 && chown www-data:www-data /var/run/apache2
