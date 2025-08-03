@@ -1,5 +1,7 @@
-#!/bin/sh
-export PORT=${PORT:-8080}
-envsubst '${PORT}' < /home/container/default.conf.template > /home/container/default.conf
-php-fpm &
-nginx -g 'daemon off;' -c /home/container/default.conf
+#!/bin/bash
+
+PORT=${SERVER_PORT:-8080}
+
+envsubst '$PORT' < /home/container/default.conf.template > /home/container/default.conf
+
+nginx -c /home/container/default.conf -g "daemon off;"
