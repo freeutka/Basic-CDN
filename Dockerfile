@@ -2,15 +2,14 @@ FROM php:8.2-fpm
 
 RUN apt-get update && apt-get install -y nginx gettext-base
 
-COPY . /var/www/html/
-RUN chown -R www-data:www-data /var/www/html
+RUN mkdir -p /home/container
 
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY default.conf.template /etc/nginx/conf.d/default.conf.template
+COPY . /home/container
 
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+RUN chown -R www-data:www-data /home/container
+
+RUN chmod +x /home/container/entrypoint.sh
 
 EXPOSE 8080
 
-CMD ["/entrypoint.sh"]
+CMD ["/home/container/entrypoint.sh"]
