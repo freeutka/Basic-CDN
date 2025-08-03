@@ -1,18 +1,16 @@
 server {
-    listen       ${PORT};
-    server_name  localhost;
-
-    root   /var/www/html;
-    index  index.php index.html;
+    listen $PORT;
+    root /home/container/public;
+    index index.html index.php;
 
     location / {
         try_files $uri $uri/ =404;
     }
 
     location ~ \.php$ {
-        include fastcgi_params;
-        fastcgi_pass unix:/var/run/php/php-fpm.sock; 
+        fastcgi_pass 127.0.0.1:9000;
         fastcgi_index index.php;
+        include fastcgi_params;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
     }
 }
